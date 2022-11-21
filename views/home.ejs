@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Home</title>
+
+  <style>
+    a {
+      text-decoration: none;
+    }
+
+    #setting-form-div {
+      background-color: rgba(0, 0, 0, 0.7);
+      /* display: flex; */
+      /* justify-content: center; */
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      padding-top: 100px;
+    }
+
+    #setting-form-inner {
+      position: relative;
+      background-color: rgba(255, 255, 255, 1);
+      padding: 4rem;
+      border-radius: 40px;
+    }
+
+    .cancel-button {
+      display: inline-block;
+      position: absolute;
+      border-radius: 2rem;
+      padding: 0;
+
+      right: 1rem;
+      top: -1rem;
+      transform: rotate(45deg);
+      font-size: 4rem;
+      user-select: none;
+      animation: 1s;
+    }
+
+    .cancel-button:hover {
+      background-color: rgb(196, 181, 181);
+      /* transform: rotate(135deg); */
+
+    }
+
+    .display-flex {
+      display: flex;
+    }
+
+    .display-none {
+      display: none;
+    }
+
+    .display-block {
+      display: block;
+    }
+
+    .display-inline-block {
+      display: inline-block;
+    }
+
+
+    /* setting button */
+    .setting-button {
+      animation: 1s;
+      font-size: 5rem;
+    }
+
+    .setting-button:hover {
+      transform: rotate(20deg);
+    }
+
+    /* video calling section */
+    .video-calling-main-outer-div {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* .displ */
+
+    .video-calling-inner-div {
+      padding: 4rem;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 1);
+      border-radius: 0;
+    }
+
+    .cancel-button-call {
+      display: inline-block;
+      position: absolute;
+      border-radius: 3rem;
+      padding: 0;
+
+      right: 1rem;
+      top: -1rem;
+      transform: rotate(45deg);
+      font-size: 4rem;
+      user-select: none;
+      animation: 1s;
+    }
+
+    /* video calling most inner section */
+    .banner {
+      padding: 0;
+      background-color: #52575c;
+      color: white;
+    }
+
+    .banner-text {
+      padding: 8px 20px;
+      margin: 0;
+    }
+
+
+    #join-form {
+      margin-top: 10px;
+    }
+
+    .tips {
+      font-size: 12px;
+      margin-bottom: 2px;
+      color: gray;
+    }
+
+    .join-info-text {
+      margin-bottom: 2px;
+    }
+
+    input {
+      width: 100%;
+      margin-bottom: 2px;
+    }
+
+    .player {
+      width: 480px;
+      height: 320px;
+    }
+
+    .player-name {
+      margin: 8px 0;
+    }
+
+    #success-alert,
+    #success-alert-with-token {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .player {
+        width: 320px;
+        height: 240px;
+      }
+    }
+
+    /* video {
+      color: white;
+      border-radius: 1rem;
+       background-color: rgba(248, 248, 248, 1); 
+    } 
+    */
+
+  </style>
+</head>
+
+<body>
+
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+            <use xlink:href="#bootstrap" />
+          </svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+        </ul>
+
+        <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+        </form> -->
+
+        <div class="text-end">
+          <span>
+            <%= user.email %>
+          </span>
+          <button type="button" class="btn btn-outline-light me-2"><a href="/logout">Logout</a></button>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+            class="bi bi-gear-fill setting-button" viewBox="0 0 16 16">
+            <path
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+          </svg>
+          <!-- <button type="button" class="btn btn-warning">Sign-up</button> -->
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- populating metor or mentees -->
+  <div class="container mt-3">
+    <div id="populate-area-div" class="row">
+
+    </div>
+  </div>
+
+  <!-- for details filling -->
+  <div id="setting-form-div" class="display-none">
+    <div id="setting-form-inner" class="container col-10 col-sm-6 mt-3">
+      <span class="cancel-button">+</span>
+      <form id="setting-form" class="row g-3 light">
+        <div class="col-md-6">
+          <label for="inputEmail4" class="form-label">First Name</label>
+          <input type="text" class="form-control" name="firstname" id="inputEmail4"
+            value="<%= user.firstname ? user.firstname : ""%>">
+        </div>
+        <div class="col-md-6">
+          <label for="inputPassword4" class="form-label">Last Name</label>
+          <input type="text" class="form-control" name="lastname" id="inputPassword4"
+            value="<%= user.lastname ? user.lastname : ""%>">
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-12">
+            <label for="inputAddress" class="form-label">Address</label>
+            <input type="email" class="form-control" id="inputAddress" name="email" placeholder="<%= user.email %>"
+              disabled>
+          </div>
+        </div>
+
+        <fieldset class="row mb-3 mt-3">
+          <legend class="col-form-label col-sm-1 pt-0">Role</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="role" id="gridRadios1" value="mentee"
+                <%=user.role=="mentee" || !user.role?"checked" : "" %> >
+              <label class="form-check-label" for="gridRadios1">
+                Mentee
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="role" id="gridRadios2" value="mentor"
+                <%=user.role=="mentor" ? "checked" :"" %> >
+              <label class="form-check-label" for="gridRadios2">
+                Mentor
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <div class="col-12">
+          <button type="button" class="btn btn-primary" name="submitButton">Save</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- video calling section -->
+  <div class="video-calling-main-outer-div display-none">
+    <div class="video-calling-inner-div">
+      <span class="cancel-button-call">+</span>
+      <!-- <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Congratulations!</strong><span> You can invite others join this channel by click </span><a href=""
+          target="_blank">here</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="success-alert-with-token" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Congratulations!</strong><span> Joined room successfully. </span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="success-alert-with-token" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Congratulations!</strong><span> Joined room successfully. </span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+
+      <div class="container">
+        <!-- <form id="join-form">
+           <div class="row join-info-group">
+            <div class="col-sm">
+              <p class="join-info-text">AppID</p>
+              <input id="appid" type="text" placeholder="enter appid" required>
+            </div>
+            <div class="col-sm">
+              <p class="join-info-text">Token(optional)</p>
+              <input id="token" type="text" placeholder="enter token">
+            </div>
+            <div class="col-sm">
+              <p class="join-info-text">Channel</p>
+              <input id="channel" type="text" placeholder="enter channel name" required>
+            </div>
+          </div> 
+
+          <div class="button-group">
+            <button id="join" type="submit" class="btn btn-primary btn-sm">Join</button>
+            <button id="leave" type="button" class="btn btn-primary btn-sm" disabled>Leave</button>
+          </div>
+        </form> -->
+
+        <div class="row video-group">
+          <div class="col">
+            <p id="local-player-name" class="player-name"></p>
+            <div id="local-player" class="player"></div>
+          </div>
+          <!-- <div class="w-100"></div> -->
+          <div class="col">
+            <div id="remote-playerlist"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    let token = '<%- user.agora_cred.token %>';
+    let channelName = '<%- user.agora_cred.channelName %>';
+    const email = '<%-user.email%>';
+    let role = '<%-user.role%>';
+    let firstname = '<%- user.firstname%>'
+    let lastname = '<%- user.lastname%>'
+
+
+
+    //calling buttons
+    const videoCallingMainOuterDiv = document.querySelector(".video-calling-main-outer-div");
+    const videoCallingInnerDiv = document.querySelector(".video-calling-inner-div");
+    const cancelButtonCall = document.querySelector(".cancel-button-call");
+    // let call_to_from_me = null;
+
+    //cancel-button call
+    const cancelButton = document.querySelector(".cancel-button");
+    const settingFormDiv = document.querySelector("#setting-form-div")
+
+    cancelButton.addEventListener("click", () => {
+      console.log("cancelButton");
+      if (settingFormDiv.classList.contains("display-block")) {
+        settingFormDiv.classList.remove("display-block")
+      }
+      if (!settingFormDiv.classList.contains("display-none")) {
+        settingFormDiv.classList.add("display-none");
+      }
+    })
+
+    //setting-button
+    const settingButton = document.querySelector(".setting-button")
+    settingButton.addEventListener("click", () => {
+      if (settingFormDiv.classList.contains("display-none")) {
+        settingFormDiv.classList.remove("display-none")
+      }
+
+      // if(!settingFormDiv.classList.contains("display-block")){
+      //   settingFormDiv.classList.add("display-block");
+      // }
+    })
+
+
+    //------------------- **setting router handle**
+
+    const settingForm = document.querySelector("#setting-form")
+    const settingFormElements = settingForm.elements
+    function save_settings() {
+
+      fetch(`${location.href}setting/`, {
+
+
+        // Adding method type
+        method: "POST",
+
+        // Adding body or contents to send
+        body: JSON.stringify({
+          firstname: settingFormElements["firstname"].value,
+          lastname: settingFormElements["lastname"].value,
+          role: settingFormElements["role"].value
+        }),
+
+        // Adding headers to the request
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+
+        // Converting to JSON
+        .then(response => response.json())
+
+        // Displaying results to console
+        .then(json => {
+          console.log(json)
+          if (json.message == "success") {
+            success_mesage("Saved!", settingForm);
+            fetch_data_and_populate();
+          }
+        });
+    }
+
+
+    settingForm.elements["submitButton"].addEventListener("click", () => {
+      save_settings();
+    })
+
+    function success_mesage(message, parent) {
+      const remain_elments = document.querySelector(".setting-success-message-display");
+      if (remain_elments) remain_elments.remove();
+
+      const new_doc = document.createElement("div");
+      new_doc.innerHTML =
+        `
+        ${message}
+      `
+      new_doc.setAttribute("role", "alert");
+      new_doc.classList.add("alert", "alert-success", "setting-success-message-display");
+
+      parent.appendChild(new_doc);
+      setTimeout(() => {
+        new_doc.remove();
+      }, 2000);
+    }
+
+    //populating m&m
+
+    const populateAreaDiv = document.querySelector("#populate-area-div");
+
+    function fetch_data_and_populate() {
+      fetch(`${location.href}populate/`, {
+
+        // Adding method type
+        method: "POST",
+
+        // Adding body or contents to send
+        body: JSON.stringify({
+          firstname: settingFormElements["firstname"].value,
+          lastname: settingFormElements["lastname"].value,
+          role: settingFormElements["role"].value === 'mentee' ? 'mentor' : 'mentee'
+        }),
+
+        // Adding headers to the request
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+
+        // Converting to JSON
+        .then(response => response.json())
+
+        // Displaying results to console
+        .then(json => {
+          console.log(json)
+          if (json.status === "success") {
+
+            populateAreaDiv.innerHTML = ""
+            success_mesage("Saved!", settingForm);
+            json.data.forEach((data) => {
+              createCard(data);
+            })
+          }
+          else {
+            alert("Some error occured");
+          }
+        });
+    }
+
+
+    function createCard(data) {
+      const new_card = document.createElement("div");
+      new_card.classList.add("card", "m-3");
+      new_card.style.width = "18rem"
+      new_card.style.cursor = "pointer"
+
+      new_card.innerHTML =
+        `
+        <div class="card-body">
+          <h5 class="card-title">${data.firstname ? data.firstname : ""}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">${data.email}</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a class="card-link">Join</a>
+        </div>
+        `
+      new_card.addEventListener("click", () => {
+        console.log(data.email);
+
+        if (videoCallingMainOuterDiv.classList.contains("display-none")) {
+          videoCallingMainOuterDiv.classList.remove("display-none");
+        }
+        videoCallingMainOuterDiv.classList.add("display-flex");
+
+        // call_to_from_me = data.email;
+        talking_with_user = data.email; //currently talking with which user
+        fetch_token_and_APIid(data.email);
+      })
+      populateAreaDiv.appendChild(new_card);
+    }
+
+
+    fetch_data_and_populate();
+  </script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script>
+    //main chatting div
+
+    cancelButtonCall.addEventListener("click", () => {
+      leave();
+      console.log("cancelButtonCall clicked")
+      if (!videoCallingMainOuterDiv.classList.contains("display-none")) {
+        videoCallingMainOuterDiv.classList.add("display-none")
+      }
+      if (videoCallingMainOuterDiv.classList.contains("display-flex")) {
+        videoCallingMainOuterDiv.classList.remove("display-flex")
+      }
+    })
+
+    // create Agora client
+    var client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+    var localTracks = {
+      videoTrack: null,
+      audioTrack: null
+    };
+    var remoteUsers = {};
+    // Agora client options
+    var options = {
+      appid: null,
+      channel: null,
+      uid: null,
+      token: null
+    };
+    let talking_with_user = null;
+
+    // $("#join-form").submit(async function (e) {
+    //   e.preventDefault();
+    //   $("#join").attr("disabled", true);
+    //   try {
+    //     options.appid = $("#appid").val();
+    //     options.token = $("#token").val();
+    //     options.channel = $("#channel").val();
+    //     await join();
+    //     if (options.token) {
+    //       $("#success-alert-with-token").css("display", "block");
+    //     } else {
+    //       $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
+    //       $("#success-alert").css("display", "block");
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   } finally {
+    //     $("#leave").attr("disabled", false);
+    //   }
+    // })
+
+    // $("#leave").click(function (e) {
+    //   leave();
+    // })
+
+    async function join() {
+
+      // add event listener to play remote tracks when remote user publishs.
+      client.on("user-published", handleUserPublished);
+      client.on("user-unpublished", handleUserUnpublished);
+
+      // join a channel and create local tracks, we can use Promise.all to run them concurrently
+      [options.uid, localTracks.audioTrack, localTracks.videoTrack] = await Promise.all([
+        // join the channel
+        client.join(options.appid, options.channel, options.token || null),
+        // create local tracks, using microphone and camera
+        AgoraRTC.createMicrophoneAudioTrack(),
+        AgoraRTC.createCameraVideoTrack()
+      ]);
+
+      // play local video track
+      localTracks.videoTrack.play("local-player");
+      $("#local-player-name").text(`You: ${email}`);
+
+      // publish local tracks to channel
+      await client.publish(Object.values(localTracks));
+      console.log("publish success");
+    }
+
+    async function leave() {
+      for (trackName in localTracks) {
+        var track = localTracks[trackName];
+        if (track) {
+          track.stop();
+          track.close();
+          localTracks[trackName] = undefined;
+        }
+        
+      }
+
+      // remove remote users and player views
+      remoteUsers = {};
+      // $("#remote-playerlist").html("");
+
+      // leave the channel
+      await client.leave();
+
+      $("#local-player-name").text("");
+      // $("#join").attr("disabled", false);
+      // $("#leave").attr("disabled", true);
+      console.log("client leaves channel success");
+    }
+
+    async function subscribe(user, mediaType) {
+      const uid = user.uid;
+      // subscribe to a remote user
+      await client.subscribe(user, mediaType);
+      console.log("subscribe success");
+      if (mediaType === 'video') {
+        const player = $(`
+          <div id="player-wrapper-${uid}">
+            <p class="player-name">Talking with: ${talking_with_user}</p>
+            <div id="player-${uid}" class="player"></div>
+          </div>
+        `);
+        $("#remote-playerlist").html("")
+        $("#remote-playerlist").append(player);
+        user.videoTrack.play(`player-${uid}`);
+      }
+      if (mediaType === 'audio') {
+        user.audioTrack.play();
+      }
+    }
+
+    function handleUserPublished(user, mediaType) {
+      const id = user.uid;
+      remoteUsers[id] = user;
+      subscribe(user, mediaType);
+    }
+
+    function handleUserUnpublished(user) {
+      const id = user.uid;
+      delete remoteUsers[id];
+      $(`#player-wrapper-${id}`).remove();
+    }
+
+
+
+    function fetch_token_and_APIid(to_which_user) {
+      console.log(to_which_user)
+      fetch(`${location.href}token/`, {
+        // Adding method type
+        method: "POST",
+        // Adding body or contents to send
+        body: JSON.stringify({
+          firstname: settingFormElements["firstname"].value,
+          lastname: settingFormElements["lastname"].value,
+          role: settingFormElements["role"].value === 'mentee' ? 'mentor' : 'mentee',
+          to_which_user
+        }),
+        // Adding headers to the request
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+        // Converting to JSON
+        .then(response => response.json())
+        // Displaying results to console
+        .then(json => {
+          console.log(json)
+          if (json.status === "success") {
+            options.appid = json.appId
+            options.token = json.token
+            options.channel = json.channelName,
+              options.uid = json.uid
+            leave();
+            join();
+          }
+          else {
+            console.error("Error:: fechting token");
+          }
+        });
+    }
+  </script>
+</body>
+
+</html>
